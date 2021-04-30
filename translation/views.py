@@ -7,11 +7,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Translation
 from .serializer import TranslationSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class TranslationList(APIView):
     """
     Wyswietlanie wszystkich dostepnych translacji lub dodanie nowej
     """
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, format=None):
         translations = Translation.objects.all()
         serializer = TranslationSerializer(translations, many=True)
@@ -28,6 +31,8 @@ class TranslationDetail(APIView):
     """
     Wyswietlanie tlumaczenia, jego aktualizacja i usuniecie
     """
+    permission_classes = (IsAuthenticated,)
+
     def get_object(self, pk):
         try:
             return Translation.objects.get(pk=pk)

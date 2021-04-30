@@ -4,11 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Shop
 from .serializers import ShopSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class ShopList(APIView):
     """
     Wyswietlenie wszystkich sklepow lub dodanie nowego.
     """
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, format=None):
         shops = Shop.objects.all()
         serializer = ShopSerializer(shops, many=True)
@@ -25,6 +28,8 @@ class ShopDetail(APIView):
     """
     Wyswietlanie szczegolow sklepu, aktualizacja jego danych lub jego usuniecie
     """
+    permission_classes = (IsAuthenticated,)
+
     def get_object(self, pk):
         try:
             return Shop.objects.get(pk=pk)

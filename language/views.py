@@ -4,11 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Language
 from .serializers import LanguageSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class LanguageList(APIView):
     """
     Wyswietlanie wszystkich dostepnych jezykow na sklepach lub dodanie nowego
     """
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, format=None):
         languages = Language.objects.all()
         serializer = LanguageSerializer(languages, many=True)
@@ -25,6 +28,8 @@ class LanguageDetail(APIView):
     """
     Wyswietlanie jezyka, aktualizacja jego danych lub jego usuniecie
     """
+    permission_classes = (IsAuthenticated,)
+
     def get_object(self, pk):
         try:
             return Language.objects.get(pk=pk)
